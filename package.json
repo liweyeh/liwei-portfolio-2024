@@ -8,7 +8,8 @@
 		"start": "next start",
 		"lint": "next lint",
 		"prettier": "prettier --write . --log-level silent",
-		"format": "yarn prettier && next lint && yarn tsc"
+		"format": "yarn prettier && next lint && yarn tsc --noEmit",
+		"postinstall": "husky"
 	},
 	"dependencies": {
 		"next": "14.1.0",
@@ -24,6 +25,8 @@
 		"eslint": "^8",
 		"eslint-config-next": "14.1.0",
 		"eslint-config-prettier": "^9.1.0",
+		"husky": "^9.0.11",
+		"lint-staged": "^15.2.2",
 		"postcss": "^8",
 		"prettier": "^3.2.5",
 		"tailwindcss": "^3.3.0",
