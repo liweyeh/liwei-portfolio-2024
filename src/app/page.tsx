@@ -2,7 +2,7 @@ import { ThreeScene } from '@components';
 
 const Home = () => {
 	return (
-		<main>
+		<main className="bg-white w-screen h-screen">
 			<ThreeScene />
 		</main>
 	);

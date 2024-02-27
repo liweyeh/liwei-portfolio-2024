@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html>
-			<body className={exo2.className}>{children}</body>
+			<body className={`${exo2.className}`}>{children}</body>
 		</html>
 	);
 }
