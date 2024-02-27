@@ -1,5 +1,11 @@
-import Image from 'next/image';
+import { ThreeScene } from '@components';
 
-export default function Home() {
-	return <main></main>;
-}
+const Home = () => {
+	return (
+		<main>
+			<ThreeScene />
+		</main>
+	);
+};
+
+export default Home;
