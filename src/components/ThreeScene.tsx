@@ -2,10 +2,12 @@
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 export const ThreeScene: React.FC = () => {
 	const initialised = useRef<boolean>(false);
 	const containerRef = useRef<HTMLDivElement>(null);
+	const loader = new GLTFLoader();
 
 	useEffect(() => {
 		if (typeof window !== 'undefined' && !initialised.current) {
@@ -21,6 +23,23 @@ export const ThreeScene: React.FC = () => {
 			const renderer = new THREE.WebGLRenderer();
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			document.body.appendChild(renderer.domElement);
+			loader.load(
+				// resource URL
+				'models/house.glb',
+				// called when the resource is loaded
+				function (gltf) {
+					const light = new THREE.AmbientLight(0x404040); // soft white light
+					scene.add(light);
+
+					scene.add(gltf.scene);
+
+					gltf.animations; // Array<THREE.AnimationClip>
+					gltf.scene; // THREE.Group
+					gltf.scenes; // Array<THREE.Group>
+					gltf.cameras; // Array<THREE.Camera>
+					gltf.asset; // Object
+				},
+			);
 
 			const geometry = new THREE.BoxGeometry(1, 1, 1);
 			const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
