@@ -1,67 +1,63 @@
 'use client';
 import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
+import { addGridHelper, addCameraHelper } from '@util';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 export const ThreeScene: React.FC = () => {
 	const initialised = useRef<boolean>(false);
 	const containerRef = useRef<HTMLDivElement>(null);
-	const loader = new GLTFLoader();
 
 	useEffect(() => {
 		if (typeof window !== 'undefined' && !initialised.current) {
+			// Prevent re-render
 			initialised.current = true;
+
+			// Create scene
 			const scene = new THREE.Scene();
+			scene.background = new THREE.Color(0xffaf85);
+
+			// Create camera
 			const camera = new THREE.PerspectiveCamera(
 				75,
 				window.innerWidth / window.innerHeight,
 				0.1,
 				1000,
 			);
-
 			const renderer = new THREE.WebGLRenderer();
 			renderer.setSize(window.innerWidth, window.innerHeight);
-			document.body.appendChild(renderer.domElement);
-			loader.load(
-				// resource URL
-				'models/house.glb',
-				// called when the resource is loaded
-				function (gltf) {
-					const light = new THREE.AmbientLight(0x404040); // soft white light
-					scene.add(light);
-
-					scene.add(gltf.scene);
-
-					gltf.animations; // Array<THREE.AnimationClip>
-					gltf.scene; // THREE.Group
-					gltf.scenes; // Array<THREE.Group>
-					gltf.cameras; // Array<THREE.Camera>
-					gltf.asset; // Object
-				},
-			);
-
-			const geometry = new THREE.BoxGeometry(1, 1, 1);
-			const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-			const cube = new THREE.Mesh(geometry, material);
-			scene.add(cube);
-
+			containerRef.current?.appendChild(renderer.domElement);
 			camera.position.z = 5;
-			const gridHelper = new THREE.GridHelper(200, 50);
-			scene.add(gridHelper);
-			const controls = new OrbitControls(camera, renderer.domElement);
-			controls.update();
 
+			// Add cube
+			const geometry = new THREE.BoxGeometry();
+			const material = new THREE.MeshBasicMaterial({ color: 0x6db3c5 });
+			const cube1 = new THREE.Mesh(geometry, material);
+			cube1.position.x = -2;
+			scene.add(cube1);
+			const cube2 = new THREE.Mesh(geometry, material);
+			cube2.position.x = 2;
+			scene.add(cube2);
+
+			// Render the scene and camera
+			const startingPoint = cube1.position.x;
+			camera.position.x = startingPoint;
+			const totalDistance = cube2.position.x - cube1.position.x;
+			let time = 0;
+			let isPanningRight = 1;
 			const animate = () => {
-				requestAnimationFrame(animate);
-
-				cube.rotation.x += 0.01;
-				cube.rotation.y += 0.01;
-				controls.update();
-
+				if (isPanningRight) {
+					time += 0.01;
+					if (time >= 1) isPanningRight = 0;
+				} else {
+					time -= 0.01;
+					if (time <= 0) isPanningRight = 1;
+				}
+				camera.position.x = startingPoint + totalDistance * time;
+				camera.lookAt(cube1.position);
 				renderer.render(scene, camera);
+				requestAnimationFrame(animate);
 			};
-
 			animate();
 		}
 	}, []);
