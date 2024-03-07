@@ -1,4 +1,4 @@
-Welcome to Liwei's portfolio's repo. Please feel free to have a look in the source code. I have documentations regarding how to project is structured and how to start running it in your local. If you have any questions, either techinal or business inqury, you're welcome to contact me here: liweiyehdev@gmail.com.
+Welcome to Liwei's portfolio's repo. Please feel free to have a look at the source code. I have documentations regarding how the project is structured and how to start running it in your local. If you have any questions, either technical or business enquiry, you're welcome to contact me via liweiyehdev@gmail.com.
 
 ## Overview
 
