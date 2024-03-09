@@ -1,12 +1,18 @@
 'use client';
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
-import { addGridHelper, addCameraHelper } from '@util';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { moveCameraToLookAt } from '@util';
 
 export const ThreeScene: React.FC = () => {
 	const initialised = useRef<boolean>(false);
 	const containerRef = useRef<HTMLDivElement>(null);
+	const [sceneControls, setSceneControls] = useState<{
+		renderer: THREE.WebGLRenderer;
+		scene: THREE.Scene;
+		camera: THREE.Camera;
+	}>();
+	const [cube, setCube] = useState<THREE.Mesh>();
+	const [secCub, setSecCube] = useState<THREE.Mesh>();
 
 	useEffect(() => {
 		if (typeof window !== 'undefined' && !initialised.current) {
@@ -34,6 +40,7 @@ export const ThreeScene: React.FC = () => {
 			const material = new THREE.MeshBasicMaterial({ color: 0x6db3c5 });
 			const cube1 = new THREE.Mesh(geometry, material);
 			cube1.position.x = -2;
+			cube1.position.z = -4;
 			scene.add(cube1);
 			const cube2 = new THREE.Mesh(geometry, material);
 			cube2.position.x = 2;
@@ -42,25 +49,46 @@ export const ThreeScene: React.FC = () => {
 			// Render the scene and camera
 			const startingPoint = cube1.position.x;
 			camera.position.x = startingPoint;
-			const totalDistance = cube2.position.x - cube1.position.x;
-			let time = 0;
-			let isPanningRight = 1;
-			const animate = () => {
-				if (isPanningRight) {
-					time += 0.01;
-					if (time >= 1) isPanningRight = 0;
-				} else {
-					time -= 0.01;
-					if (time <= 0) isPanningRight = 1;
-				}
-				camera.position.x = startingPoint + totalDistance * time;
-				camera.lookAt(cube1.position);
-				renderer.render(scene, camera);
-				requestAnimationFrame(animate);
-			};
-			animate();
+			renderer.render(scene, camera);
+			setCube(cube1);
+			setSecCube(cube2);
+			setSceneControls({ renderer, scene, camera });
 		}
 	}, []);
 
-	return <div ref={containerRef} />;
+	return (
+		<div>
+			<div ref={containerRef} />
+			<button
+				onClick={() => {
+					if (cube && sceneControls) {
+						const { renderer, scene, camera } = sceneControls;
+						const destination = new THREE.Vector3(
+							cube.position.x,
+							cube.position.y,
+							cube.position.z + 2,
+						);
+						moveCameraToLookAt(renderer, scene, camera, destination, cube.position, 0.01);
+					}
+				}}
+			>
+				Cube 1
+			</button>
+			<button
+				onClick={() => {
+					if (secCub && sceneControls) {
+						const { renderer, scene, camera } = sceneControls;
+						const destination = new THREE.Vector3(
+							secCub.position.x,
+							secCub.position.y,
+							secCub.position.z + 2,
+						);
+						moveCameraToLookAt(renderer, scene, camera, destination, secCub.position, 0.01);
+					}
+				}}
+			>
+				Cube 2
+			</button>
+		</div>
+	);
 };
