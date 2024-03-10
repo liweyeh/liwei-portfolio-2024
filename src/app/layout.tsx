@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Exo_2 } from 'next/font/google';
 import './globals.css';
+import { AnimationContextProvider } from '@context';
 
 const exo2 = Exo_2({
 	subsets: ['latin'],
@@ -19,7 +20,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html>
-			<body className={`${exo2.className}`}>{children}</body>
+			<AnimationContextProvider>
+				<body className={`${exo2.className}`}>{children}</body>
+			</AnimationContextProvider>
 		</html>
 	);
 }

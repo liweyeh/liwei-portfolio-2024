@@ -3,9 +3,9 @@ import type { Config } from 'tailwindcss';
 const customColors = {
 	tangerine: '#FFAF85',
 	moonstone: '#6DB3C5',
-	flax: 'FFEE93',
-	celadon: 'ADF7B6',
-	chiffon: 'FCF5C7',
+	flax: '#FFEE93',
+	celadon: '#ADF7B6',
+	chiffon: '#FCF5C7',
 	sky_blue: '#8AC2D0',
 };
 
@@ -19,7 +19,7 @@ const config: Config = {
 		extend: {
 			colors: {
 				'background.primary': customColors.tangerine,
-				'background.info': customColors.chiffon,
+				'background.info': customColors.moonstone,
 				'background.accent': customColors.celadon,
 				'text.primary': customColors.moonstone,
 				'text.subtitle': customColors.sky_blue,

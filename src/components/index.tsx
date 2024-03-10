@@ -1,1 +1,2 @@
-export * from './ThreeScene';
+export * from './Scene';
+export * from './WelcomeUI';

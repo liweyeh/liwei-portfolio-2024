@@ -1,9 +1,11 @@
-import { ThreeScene } from '@components';
+'use client';
+import { Scene, WelcomeUI } from '@components';
 
 const Home = () => {
 	return (
 		<main>
-			<ThreeScene />
+			<WelcomeUI />
+			<Scene />
 		</main>
 	);
 };
