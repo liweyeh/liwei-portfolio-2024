@@ -1,6 +1,9 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import * as THREE from 'three';
 import { AnimationContext } from '@context';
+// import resolveConfig from 'tailwindcss/resolveConfig';
+// import tailwindConfig from '../../tailwind.config';
+// const fullConfig = resolveConfig(tailwindConfig);
 
 export const Scene: React.FC = () => {
 	const { setSceneControls, setCube } = useContext(AnimationContext);
@@ -43,9 +46,5 @@ export const Scene: React.FC = () => {
 		}
 	}, [setSceneControls, setCube]);
 
-	return (
-		<div>
-			<div ref={containerRef} />
-		</div>
-	);
+	return <div ref={containerRef} />;
 };

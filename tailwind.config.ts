@@ -1,12 +1,16 @@
 import type { Config } from 'tailwindcss';
 
 const customColors = {
-	tangerine: '#FFAF85',
-	moonstone: '#6DB3C5',
-	flax: '#FFEE93',
-	celadon: '#ADF7B6',
-	chiffon: '#FCF5C7',
-	sky_blue: '#8AC2D0',
+	rich_black: '#001219',
+	midnight_green: '#005F73',
+	dark_cyan: '#0A9396',
+	tiffany_blue: '#94D2BD',
+	vanilla: '#E9D8A6',
+	gamboge: '#EE9B00',
+	alloy_orange: '#CA6702',
+	rust: '#BB3E03',
+	rufous: '#AE2012',
+	auburn: '#9B2226',
 };
 
 const config: Config = {
@@ -16,14 +20,12 @@ const config: Config = {
 		'./src/app/**/*.{js,ts,jsx,tsx,mdx}',
 	],
 	theme: {
-		extend: {
-			colors: {
-				'background.primary': customColors.tangerine,
-				'background.info': customColors.moonstone,
-				'background.accent': customColors.celadon,
-				'text.primary': customColors.moonstone,
-				'text.subtitle': customColors.sky_blue,
-			},
+		colors: {
+			'background.primary': customColors.auburn,
+			'background.info': customColors.gamboge,
+			'background.accent': customColors.rust,
+			'text.primary': customColors.midnight_green,
+			'text.subtitle': customColors.dark_cyan,
 		},
 	},
 	plugins: [],

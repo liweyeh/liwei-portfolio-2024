@@ -1,9 +1,10 @@
 'use client';
-import { Scene, WelcomeUI } from '@components';
+import { Scene, WelcomeUI, NavBar } from '@components';
 
 const Home = () => {
 	return (
 		<main>
+			<NavBar />
 			<WelcomeUI />
 			<Scene />
 		</main>
