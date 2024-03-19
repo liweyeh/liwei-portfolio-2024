@@ -1,6 +1,6 @@
 import type { Config } from 'tailwindcss';
 
-const customColors = {
+export const CUSTOM_COLORS = {
 	rich_black: '#001219',
 	midnight_green: '#005F73',
 	dark_cyan: '#0A9396',
@@ -20,12 +20,14 @@ const config: Config = {
 		'./src/app/**/*.{js,ts,jsx,tsx,mdx}',
 	],
 	theme: {
-		colors: {
-			'background.primary': customColors.auburn,
-			'background.info': customColors.gamboge,
-			'background.accent': customColors.rust,
-			'text.primary': customColors.midnight_green,
-			'text.subtitle': customColors.dark_cyan,
+		extend: {
+			colors: {
+				background_primary: CUSTOM_COLORS.auburn,
+				background_info: CUSTOM_COLORS.gamboge,
+				background_accent: CUSTOM_COLORS.rust,
+				text_primary: CUSTOM_COLORS.midnight_green,
+				text_subtitle: CUSTOM_COLORS.dark_cyan,
+			},
 		},
 	},
 	plugins: [],

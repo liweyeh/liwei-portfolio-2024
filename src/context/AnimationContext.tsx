@@ -18,15 +18,11 @@ export interface AnimationContextState {
 			| undefined
 		>
 	>;
-	cube?: THREE.Mesh;
-	setCube: React.Dispatch<React.SetStateAction<THREE.Mesh | undefined>>;
 }
 
 const contextDefaultValues: AnimationContextState = {
 	sceneControls: undefined,
 	setSceneControls: () => {},
-	cube: undefined,
-	setCube: () => {},
 };
 
 export const AnimationContext = createContext<AnimationContextState>(contextDefaultValues);
@@ -41,15 +37,12 @@ export const AnimationContextProvider = ({
 		scene: THREE.Scene;
 		camera: THREE.Camera;
 	}>();
-	const [cube, setCube] = useState<THREE.Mesh>();
 
 	return (
 		<AnimationContext.Provider
 			value={{
 				sceneControls,
 				setSceneControls,
-				cube,
-				setCube,
 			}}
 		>
 			{children}

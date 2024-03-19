@@ -1,12 +1,13 @@
 import React, { useRef, useEffect, useContext } from 'react';
 import * as THREE from 'three';
 import { AnimationContext } from '@context';
-// import resolveConfig from 'tailwindcss/resolveConfig';
-// import tailwindConfig from '../../tailwind.config';
-// const fullConfig = resolveConfig(tailwindConfig);
+import { CUSTOM_COLORS } from '../../tailwind.config';
+import { addGridHelper, addOrbitControl } from '@util';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { POS_CONST } from '@constant';
 
 export const Scene: React.FC = () => {
-	const { setSceneControls, setCube } = useContext(AnimationContext);
+	const { setSceneControls } = useContext(AnimationContext);
 	const initialised = useRef<boolean>(false);
 	const containerRef = useRef<HTMLDivElement>(null);
 
@@ -17,7 +18,7 @@ export const Scene: React.FC = () => {
 
 			// Create scene
 			const scene = new THREE.Scene();
-			scene.background = new THREE.Color(0xffaf85);
+			scene.background = new THREE.Color(CUSTOM_COLORS.auburn);
 
 			// Create camera
 			const camera = new THREE.PerspectiveCamera(
@@ -29,22 +30,45 @@ export const Scene: React.FC = () => {
 			const renderer = new THREE.WebGLRenderer();
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			containerRef.current?.appendChild(renderer.domElement);
-			camera.position.z = 10;
+			const { camera_starting, char, project } = POS_CONST;
+			camera.position.set(camera_starting.x, camera_starting.y, camera_starting.z);
 
 			// Add cube
 			const geometry = new THREE.BoxGeometry();
-			const material = new THREE.MeshBasicMaterial({ color: 0x6db3c5 });
+			const material = new THREE.MeshBasicMaterial({ color: CUSTOM_COLORS.gamboge });
 			const cube1 = new THREE.Mesh(geometry, material);
+			const cube2 = new THREE.Mesh(geometry, material);
+			cube1.position.set(char.x, char.y, char.z);
+			cube2.position.set(project.x, project.y, project.z);
 			scene.add(cube1);
+			scene.add(cube2);
 
 			// Render the scene and camera
 			const startingPoint = cube1.position.x;
 			camera.position.x = startingPoint;
-			renderer.render(scene, camera);
+			addGridHelper(scene);
+			const loader = new GLTFLoader();
+			loader.load(
+				// resource URL
+				'models/house.glb',
+				// called when the resource is loaded
+				function (gltf) {
+					scene.add(gltf.scene);
+
+					gltf.animations; // Array<THREE.AnimationClip>
+					gltf.scene; // THREE.Group
+					gltf.scenes; // Array<THREE.Group>
+					gltf.cameras; // Array<THREE.Camera>
+					gltf.asset; // Object
+				},
+			);
+
+			addOrbitControl(scene, camera, renderer);
+
+			// renderer.render(scene, camera);
 			setSceneControls({ renderer, scene, camera });
-			setCube(cube1);
 		}
-	}, [setSceneControls, setCube]);
+	}, [setSceneControls]);
 
 	return <div ref={containerRef} />;
 };

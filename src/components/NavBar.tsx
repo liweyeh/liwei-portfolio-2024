@@ -23,15 +23,13 @@ export const NavBar = () => {
 				className={`fixed top-0 right-0 z-20 h-screen w-screen ${showDrawer ? 'flex' : 'hidden'}`}
 			>
 				<div
-					className="bg-black w-full opacity-30"
+					className="bg-black w-full opacity-30 "
 					onClick={() => {
 						setShowDrawer(false);
 					}}
-				>
-					backdrop
-				</div>
+				/>
 				<div
-					className={`fixed top-0 right-0 bg-background.info z-30 h-screen w-1/5 translate-x-${showDrawer ? '0' : 'full'}`}
+					className={`fixed top-0 right-0 bg-background_info z-30 h-screen w-1/5 translate-x-${showDrawer ? '0' : 'full'}`}
 				>
 					content
 				</div>

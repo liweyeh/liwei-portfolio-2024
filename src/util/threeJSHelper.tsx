@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // Camera Helpers
 export const moveCameraToLookAt = (
 	renderer: THREE.WebGLRenderer,
@@ -35,4 +35,20 @@ export const addGridHelper = (scene: THREE.Scene) => {
 export const addCameraHelper = (camera: THREE.Camera, scene: THREE.Scene) => {
 	const helper = new THREE.CameraHelper(camera);
 	scene.add(helper);
+};
+
+export const addOrbitControl = (
+	scene: THREE.Scene,
+	camera: THREE.Camera,
+	renderer: THREE.WebGLRenderer,
+) => {
+	const controls = new OrbitControls(camera, renderer.domElement);
+	controls.update();
+
+	const animate = () => {
+		requestAnimationFrame(animate);
+		controls.update();
+		renderer.render(scene, camera);
+	};
+	animate();
 };
