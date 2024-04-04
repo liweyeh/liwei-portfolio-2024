@@ -4,6 +4,7 @@ import { AnimationContext } from '@context';
 import { CUSTOM_COLORS } from '../../tailwind.config';
 import { addGridHelper, addOrbitControl } from '@util';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/Addons.js';
 import { POS_CONST } from '@constant';
 
 export const Scene: React.FC = () => {
@@ -48,9 +49,12 @@ export const Scene: React.FC = () => {
 			camera.position.x = startingPoint;
 			addGridHelper(scene);
 			const loader = new GLTFLoader();
+			const dracoLoader = new DRACOLoader();
+			dracoLoader.setDecoderPath('/examples/jsm/libs/draco/');
+			loader.setDRACOLoader(dracoLoader);
 			loader.load(
 				// resource URL
-				'models/house.glb',
+				'/models/house.gltf',
 				// called when the resource is loaded
 				function (gltf) {
 					scene.add(gltf.scene);
