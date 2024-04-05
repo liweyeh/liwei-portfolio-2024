@@ -34,19 +34,7 @@ export const Scene: React.FC = () => {
 			const { camera_starting, char, project } = POS_CONST;
 			camera.position.set(camera_starting.x, camera_starting.y, camera_starting.z);
 
-			// Add cube
-			const geometry = new THREE.BoxGeometry();
-			const material = new THREE.MeshBasicMaterial({ color: CUSTOM_COLORS.gamboge });
-			const cube1 = new THREE.Mesh(geometry, material);
-			const cube2 = new THREE.Mesh(geometry, material);
-			cube1.position.set(char.x, char.y, char.z);
-			cube2.position.set(project.x, project.y, project.z);
-			scene.add(cube1);
-			scene.add(cube2);
-
 			// Render the scene and camera
-			const startingPoint = cube1.position.x;
-			camera.position.x = startingPoint;
 			addGridHelper(scene);
 			const loader = new GLTFLoader();
 			const dracoLoader = new DRACOLoader();
@@ -54,7 +42,7 @@ export const Scene: React.FC = () => {
 			loader.setDRACOLoader(dracoLoader);
 			loader.load(
 				// resource URL
-				'/models/house.gltf',
+				'/models/house.glb',
 				// called when the resource is loaded
 				function (gltf) {
 					scene.add(gltf.scene);
@@ -66,6 +54,9 @@ export const Scene: React.FC = () => {
 					gltf.asset; // Object
 				},
 			);
+
+			const light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
+			scene.add(light);
 
 			addOrbitControl(scene, camera, renderer);
 
