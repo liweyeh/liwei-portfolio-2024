@@ -4,7 +4,6 @@ import { AnimationContext } from '@context';
 import { CUSTOM_COLORS } from '../../tailwind.config';
 import { addGridHelper, addOrbitControl } from '@util';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/Addons.js';
 import { POS_CONST } from '@constant';
 
 export const Scene: React.FC = () => {
@@ -21,6 +20,11 @@ export const Scene: React.FC = () => {
 			const scene = new THREE.Scene();
 			scene.background = new THREE.Color(CUSTOM_COLORS.auburn);
 
+			// Create renderer
+			const renderer = new THREE.WebGLRenderer();
+			renderer.setSize(window.innerWidth, window.innerHeight);
+			containerRef.current?.appendChild(renderer.domElement);
+
 			// Create camera
 			const camera = new THREE.PerspectiveCamera(
 				75,
@@ -28,39 +32,24 @@ export const Scene: React.FC = () => {
 				0.1,
 				1000,
 			);
-			const renderer = new THREE.WebGLRenderer();
-			renderer.setSize(window.innerWidth, window.innerHeight);
-			containerRef.current?.appendChild(renderer.domElement);
-			const { camera_starting, char, project } = POS_CONST;
-			camera.position.set(camera_starting.x, camera_starting.y, camera_starting.z);
+			const { CAM_START_POS, HOUSE_CENTER } = POS_CONST;
+			camera.position.set(CAM_START_POS.x, CAM_START_POS.y, CAM_START_POS.z);
 
-			// Render the scene and camera
-			addGridHelper(scene);
-			const loader = new GLTFLoader();
-			const dracoLoader = new DRACOLoader();
-			dracoLoader.setDecoderPath('/examples/jsm/libs/draco/');
-			loader.setDRACOLoader(dracoLoader);
-			loader.load(
-				// resource URL
-				'/models/house.glb',
-				// called when the resource is loaded
-				function (gltf) {
-					scene.add(gltf.scene);
-
-					gltf.animations; // Array<THREE.AnimationClip>
-					gltf.scene; // THREE.Group
-					gltf.scenes; // Array<THREE.Group>
-					gltf.cameras; // Array<THREE.Camera>
-					gltf.asset; // Object
-				},
-			);
-
+			// Create lighting
 			const light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
 			scene.add(light);
 
-			addOrbitControl(scene, camera, renderer);
+			// Render the model
+			const loader = new GLTFLoader();
+			loader.load('/models/house.glb', function (gltf) {
+				const house = new THREE.Vector3(HOUSE_CENTER.x, HOUSE_CENTER.y, HOUSE_CENTER.z);
+				scene.add(gltf.scene);
+				camera.lookAt(house);
+				renderer.render(scene, camera);
+			});
 
-			// renderer.render(scene, camera);
+			// addOrbitControl(scene, camera, renderer);
+
 			setSceneControls({ renderer, scene, camera });
 		}
 	}, [setSceneControls]);

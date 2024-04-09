@@ -1,27 +1,23 @@
 export const POS_CONST = {
-	camera_starting: {
-		x: 0,
-		y: 0,
-		z: 10,
+	CAM_START_POS: {
+		x: 15,
+		y: 10,
+		z: 20,
 	},
-	camera_enter: {
+
+	CAM_HOUSE_POS: {
+		x: 3,
+		y: 4,
+		z: 2,
+	},
+	FIRST_LOOK_AT: {
+		x: -7,
+		y: 2,
+		z: -15,
+	},
+	HOUSE_CENTER: {
 		x: 0,
 		y: 0,
 		z: 0,
-	},
-	char: {
-		x: 5,
-		y: 0,
-		z: -5,
-	},
-	project: {
-		x: -5,
-		y: 0,
-		z: -7,
-	},
-	skill: {
-		x: 0,
-		y: 0,
-		z: 10,
 	},
 };

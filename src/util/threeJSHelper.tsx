@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 // Camera Helpers
-export const moveCameraToLookAt = (
+export const moveCameraToLookAt = async (
 	renderer: THREE.WebGLRenderer,
 	scene: THREE.Scene,
 	camera: THREE.Camera,
@@ -12,18 +12,23 @@ export const moveCameraToLookAt = (
 	const startingPoint = camera.position;
 	const endingPoint = cameraDestination;
 	let progress = 0;
+	const camPromise = new Promise((resolve, reject) => {
+		const animate = () => {
+			progress += speed;
+			const { x, y, z } = startingPoint.lerp(endingPoint, progress);
+			camera.position.set(x, y, z);
+			camera.lookAt(target);
+			renderer.render(scene, camera);
+			if (progress >= 0 && progress < 1) {
+				requestAnimationFrame(animate);
+			} else {
+				resolve('reach destination');
+			}
+		};
+		animate();
+	});
 
-	const animate = () => {
-		progress += speed;
-		const { x, y, z } = startingPoint.lerp(endingPoint, progress);
-		camera.position.set(x, y, z);
-		camera.lookAt(target);
-		renderer.render(scene, camera);
-		if (progress >= 0 && progress < 1) {
-			requestAnimationFrame(animate);
-		}
-	};
-	animate();
+	return camPromise;
 };
 
 // Dev Helpers

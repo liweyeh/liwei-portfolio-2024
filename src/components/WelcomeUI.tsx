@@ -9,7 +9,20 @@ export const WelcomeUI = () => {
 	const [isHidden, setIsHidden] = useState<boolean>(false);
 	const { t } = useTranslation('welcomeUI');
 	const { sceneControls } = useContext(AnimationContext);
-	const { camera_enter } = POS_CONST;
+	const { FIRST_LOOK_AT, CAM_HOUSE_POS } = POS_CONST;
+	const onUIClick = async () => {
+		if (sceneControls) {
+			const { scene, camera, renderer } = sceneControls;
+			const indoor = new THREE.Vector3(CAM_HOUSE_POS.x, CAM_HOUSE_POS.y, CAM_HOUSE_POS.z);
+			const secondLookAtPos = new THREE.Vector3(
+				FIRST_LOOK_AT.x,
+				FIRST_LOOK_AT.y + 3,
+				FIRST_LOOK_AT.z,
+			);
+			setIsHidden(true);
+			await moveCameraToLookAt(renderer, scene, camera, indoor, secondLookAtPos, 0.01);
+		}
+	};
 
 	return (
 		<>
@@ -18,19 +31,7 @@ export const WelcomeUI = () => {
 			) : (
 				<div
 					className={'fixed flex flex-col w-full h-full justify-center items-center'}
-					onClick={() => {
-						if (sceneControls) {
-							const { scene, camera, renderer } = sceneControls;
-							const destination = new THREE.Vector3(camera_enter.x, camera_enter.y, camera_enter.z);
-							const lookAtPos = new THREE.Vector3(
-								camera_enter.x,
-								camera_enter.y,
-								camera_enter.z - 10,
-							);
-							// moveCameraToLookAt(renderer, scene, camera, destination, lookAtPos, 0.01);
-							setIsHidden(true);
-						}
-					}}
+					onClick={onUIClick}
 				>
 					<div className={`text-black`}>{t`welcome`}</div>
 					<div className={`text-black`}>{t`click`}</div>
