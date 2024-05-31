@@ -49,7 +49,7 @@ export const Scene: React.FC = () => {
 				renderer.render(scene, camera);
 			});
 
-			// addOrbitControl(scene, camera, renderer);
+			addOrbitControl(scene, camera, renderer);
 
 			setSceneControls({ renderer, scene, camera });
 		}

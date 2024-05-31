@@ -3,8 +3,8 @@ import { Scene, WelcomeUI, NavBar } from '@components';
 const Home = () => {
 	return (
 		<main>
-			<NavBar />
-			<WelcomeUI />
+			{/* <NavBar />
+			<WelcomeUI /> */}
 			<Scene />
 		</main>
 	);
