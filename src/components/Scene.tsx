@@ -1,3 +1,4 @@
+'use client';
 import React, { useRef, useEffect, useContext } from 'react';
 import * as THREE from 'three';
 import { AnimationContext } from '@context';

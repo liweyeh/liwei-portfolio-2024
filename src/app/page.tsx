@@ -1,4 +1,3 @@
-'use client';
 import { Scene, WelcomeUI, NavBar } from '@components';
 
 const Home = () => {

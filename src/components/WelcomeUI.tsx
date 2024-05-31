@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useContext } from 'react';
 import useTranslation from 'next-translate/useTranslation';
 import { AnimationContext } from '@context';
